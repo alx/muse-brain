@@ -1,8 +1,10 @@
+![muse-brain](https://raw.githubusercontent.com/alx/muse-brain/master/assets/screenshot.png)
+
 # muse-brain
 
 Convert Muse Monitor OSC packets to UDP datagram
 
-![muse-brain](https://raw.githubusercontent.com/alx/muse-brain/master/assets/screenshot.png)
+Require [Muse Monitor](http://www.musemonitor.com) Android app.
 
 ## Installation
 
