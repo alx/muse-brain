@@ -14,8 +14,8 @@
     "test": "jest --runInBand --verbose",
     "coverage": "jest --coverage --runInBand --verbose",
     "eslint": "eslint src/**/*.js --ignore-pattern \"node_modules/\"",
-    "zip-logs": "find ./logs/ -type f -name \"*.log\" -exec gzip {} \\;",
-    "clean-logs": "find . -name \"*.log.gz\" -size -10k -delete"
+    "logs:zip": "find ./logs/ -type f -name \"*.log\" -exec gzip {} \\;",
+    "logs:clean": "find . -name \"*.log.gz\" -size -10k -delete"
   },
   "babel": {
     "presets": [
