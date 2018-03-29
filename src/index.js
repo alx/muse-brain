@@ -1,4 +1,5 @@
 import Osc2Udp from './Osc2Udp'
+import DataLogger from './DataLogger'
 import TerminalDisplay from './TerminalDisplay'
 
 // Creating osc2udp gateway
@@ -18,4 +19,10 @@ const osc2udp = new Osc2Udp({
 const terminalDisplay = new TerminalDisplay({
   lineLength: 50,
   dataSource: osc2udp
+});
+
+// Creating our data logger
+const dataLogger = new DataLogger({
+  dataSource: osc2udp,
+  //activity: 'meditation'
 });

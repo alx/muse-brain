@@ -14,6 +14,7 @@ const bandRegexp = /.*elements\/(.[^\/]*)_absolute/i;
 export default class TerminalDisplay {
 
   constructor(options) {
+
     this.options = options;
     this.screen = blessed.screen();
     this.absoluteLineData = [];
@@ -22,6 +23,7 @@ export default class TerminalDisplay {
     this.handleKeyboard();
 
     this.options.dataSource.on('inputOscMessage', this.handleData.bind(this));
+
   }
 
   initScreenLayout() {
@@ -38,7 +40,7 @@ export default class TerminalDisplay {
       },
       showLegend: true,
       wholeNumbersOnly: false, //true=do not show fraction in y axis
-      label: `Muse Monitor - IP: ${ip.address()} - Port: ${this.options.dataSource.options.oscIn.port}`,
+      label: `Muse Brain -  IP: ${ip.address()} - Port: ${this.options.dataSource.options.oscIn.port}`,
       showNthLabel: this.options.lineLength
     });
 
@@ -50,42 +52,41 @@ export default class TerminalDisplay {
     });
   }
 
-  setAbsoluteLineData(data) {
+  setAbsoluteLineData(band, element) {
 
-    const element = data.message.elements[0];
-    const match = element.address.match(bandRegexp)
+    let bandData = this.absoluteLineData.find(d => d.band == band);
 
-    if ( match ) {
+    if(!bandData) {
+      bandData = {
+        band: band,
+        x: Array(this.options.lineLength).fill(null).map((b, i) => `t${i}`),
+        y: Array(this.options.lineLength).fill(0),
+        style: {
+          line: colorBand[band]
+        }
+      };
 
-      const band = match[1];
-      let bandData = this.absoluteLineData.find(d => d.band == band);
-
-      if(!bandData) {
-        bandData = {
-          band: band,
-          x: Array(this.options.lineLength).fill(null).map((b, i) => `t${i}`),
-          y: Array(this.options.lineLength).fill(0),
-          style: {
-            line: colorBand[band]
-          }
-        };
-
-        this.absoluteLineData.push(bandData);
-      }
-
-      const value = parseInt(element.args[0].value * 100);
-      bandData.title = `${band} - ${value}`
-      bandData.y.shift();
-      bandData.y.push(value);
-
-      this.absoluteLine.setData(this.absoluteLineData);
-      this.screen.render();
+      this.absoluteLineData.push(bandData);
     }
+
+    const value = parseInt(element.args[0].value * 100);
+    bandData.title = `${band} - ${value}`
+    bandData.y.shift();
+    bandData.y.push(value);
+
+    this.absoluteLine.setData(this.absoluteLineData);
+    this.screen.render();
 
   }
 
   handleData(data) {
-    this.setAbsoluteLineData(data);
+    const element = data.message.elements[0];
+
+    const bandMatch = element.address.match(bandRegexp)
+    if(bandMatch) {
+      this.setAbsoluteLineData(bandMatch[1], element);
+    }
+
   }
 
 }

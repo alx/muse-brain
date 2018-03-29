@@ -13,7 +13,9 @@
     "start:dev": "nodemon src/index.js --exec babel-node",
     "test": "jest --runInBand --verbose",
     "coverage": "jest --coverage --runInBand --verbose",
-    "eslint": "eslint src/**/*.js --ignore-pattern \"node_modules/\""
+    "eslint": "eslint src/**/*.js --ignore-pattern \"node_modules/\"",
+    "zip-logs": "find ./logs/ -type f -name \"*.log\" -exec gzip {} \\;",
+    "clean-logs": "find . -name \"*.log.gz\" -size -10k -delete"
   },
   "babel": {
     "presets": [
@@ -59,6 +61,7 @@
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.8.5",
     "ip": "^1.1.5",
-    "osc-min": "^1.1.1"
+    "osc-min": "^1.1.1",
+    "simple-node-logger": "^0.93.37"
   }
 }
