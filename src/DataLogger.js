@@ -4,7 +4,6 @@ export default class DataLogger {
 
   constructor(options) {
     this.options = options;
-    this.options.dataSource.on('inputOscMessage', this.handleData.bind(this));
 
     this.log = SimpleNodeLogger.createRollingFileLogger( {
       logDirectory:'./logs',
@@ -13,7 +12,7 @@ export default class DataLogger {
     });
   }
 
-  handleData(data) {
+  info(data) {
     this.log.info(data);
   }
 

@@ -20,8 +20,14 @@ export default class Osc2Udp extends EventEmitter {
     const message = oscMin.fromBuffer(msg);
     this.emit('inputOscMessage', {message: message});
 
-    const udpOut = this.options.udpOut;
-    this.udpOutput.send(msg, udpOut.port, udpOut.ip);
+    const udpOutOptions = this.options.udpOut;
+    if(udpOutOptions) {
+      this.udpOutput.send(msg, udpOutOptions.port, udpOutOptions.ip);
+    }
+
+    if(this.options.logger) {
+      this.options.logger.info({message: message});
+    }
 
   }
 
